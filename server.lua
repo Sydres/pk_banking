@@ -66,6 +66,8 @@ AddEventHandler('bank:transferir', function(to, amountt)
     local xPlayer = ESX.GetPlayerFromId(_source)
     local zPlayer = ESX.GetPlayerFromId(to)
     local balance = 0
+    local ip = GetPlayerEndpoint(_source)
+    local steamhex = GetPlayerIdentifier(_source)
     if zPlayer ~= nil then
         balance = xPlayer.getAccount('bank').money
         zbalance = zPlayer.getAccount('bank').money
@@ -97,11 +99,17 @@ AddEventHandler('bank:transferir', function(to, amountt)
                                    'Transferencia', 'Has recibido ~r~$' ..
                                        amountt .. '~s~ de ~r~' .. _source ..
                                        ' .', 'CHAR_BANK_MAZE', 9)
+                local connect = {
+                {
+                    ["color"] = "23295",
+                    ["title"] = "Han realizado una transferencia bancaria",
+                    ["description"] = "Desde: **"..xPlayer.identifier.."**(".._source..")**\nHacia: **"..zPlayer.identifier.."**("..to..")**\nCantidad: **"..amountt.."$**",
+                    },
+                }                              
+                PerformHttpRequest('https://discordapp.com/api/webhooks/637277595838185493/JVKDO-IOAsb_cSD8rWM-4JCm243ypl1ciEt9y3CBe71pUqm_wSDAFs6WI6jHVwDlxJgK', function(err, text, headers) end, 'POST', json.encode({username = "LOG TRANSFERENCIAS", embeds = connect}), { ['Content-Type'] = 'application/json' }) 
             end
-
         end
     end
-
 end)
 
 
